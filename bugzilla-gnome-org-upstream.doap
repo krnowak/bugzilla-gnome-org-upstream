@@ -10,6 +10,8 @@
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gnome-infrastructure" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#infrastructure" />
 
+  <programming-language>Perl</programming-language>
+
   <maintainer>
     <foaf:Person>
       <foaf:name>GNOME sysadmin team</foaf:name>
