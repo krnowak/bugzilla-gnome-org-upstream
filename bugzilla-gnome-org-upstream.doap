@@ -6,6 +6,7 @@
 
   <name xml:lang="en">bugzilla-gnome-org-upstream</name>
   <shortdesc xml:lang="en">GNOME Bugzilla used at bugzilla-new.gnome.org</shortdesc>
+  <description xml:lang="en">GNOME Bugzilla used at bugzilla-new.gnome.org</description>
   <homepage rdf:resource="https://wiki.gnome.org/Sysadmin" />
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gnome-infrastructure" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#infrastructure" />
