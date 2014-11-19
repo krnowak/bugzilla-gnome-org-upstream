@@ -50,7 +50,7 @@ sub install_before_final_checks {
     my $silent = $args->{'silent'};
     my $dbh = Bugzilla->dbh();
     my $rows = $dbh->selectall_arrayref("SELECT COUNT(id) FROM tab_1") or die $dbh->errstr();
-    my $sql_values = '';
+    my @sql_values = ();
 
     return if (@{$rows} > 0 and @{$rows->[0]} > 0 and $rows->[0][0] > 0);
 
@@ -60,10 +60,10 @@ sub install_before_final_checks {
         my $id = $row->[0];
         my $value = "a $id";
 
-        $sql_values .= " ('$value', $id)";
+        push(@sql_values, "('$value', $id)");
     }
-    if ($sql_values ne '') {
-        my $sql = "INSERT INTO tab_2(value, tab_1_id)" . $sql_values;
+    if (@sql_values > 0) {
+        my $sql = "INSERT INTO tab_2(value, tab_1_id)" . join(', ', @sql_values);
 
         $dbh->do($sql) or die $dbh->errstr();
     }
