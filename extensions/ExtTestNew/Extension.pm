@@ -46,6 +46,18 @@ sub db_schema_abstract_schema {
     $schema->{'tab_2'} = $tab_2;
 }
 
+sub install_update_db {
+    my $dbh = Bugzilla->dbh();
+
+    $dbh->bz_alter_column('tab_1', 'id', {TYPE => 'MEDIUMSERIAL',
+                                          NOTNULL => 1,
+                                          PRIMARYKEY => 1});
+    $dbh->bz_alter_column('tab_2', 'tab_1_id', {TYPE => 'INT3', NOTNULL => 1,
+                                                REFERENCES => {TABLE  => 'tab_1',
+                                                               COLUMN => 'id',
+                                                               DELETE => 'CASCADE'}});
+}
+
 sub install_before_final_checks {
     my ($self, $args) = @_;
     my $silent = $args->{'silent'};
