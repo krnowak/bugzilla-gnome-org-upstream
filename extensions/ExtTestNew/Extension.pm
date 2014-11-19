@@ -11,6 +11,7 @@ use base qw(Bugzilla::Extension);
 
 # This code for this is in ./extensions/ExtTestNew/lib/Util.pm
 use Bugzilla::Extension::ExtTestNew::Util;
+use Data::Dumper;
 
 our $VERSION = '0.01';
 
@@ -43,6 +44,27 @@ sub db_schema_abstract_schema {
 
     $schema->{'tab_1'} = $tab_1;
     $schema->{'tab_2'} = $tab_2;
+}
+
+sub install_before_final_checks {
+    my ($self, $args) = @_;
+    my $silent = $args->{'silent'};
+
+    return if $silent;
+
+    my $dbh = Bugzilla->dbh();
+    my $column = $dbh->bz_column_info('tab_1', 'id');
+
+    local $Data::Dumper::Purity = 1;
+    local $Data::Dumper::Deepcopy = 1;
+    local $Data::Dumper::Terse = 0;
+    local $Data::Dumper::Sortkeys = 1;
+
+    print "bz_column_info of tab_1::id:\n" . Dumper($data) . "\n";
+
+    my $rows = $dbh->do("SHOW COLUMNS FROM tab_1 WHERE Field = 'id'");
+
+    print "show columns of tab_1::id:\n" . Dumper($rows) . "\n";
 }
 
 __PACKAGE__->NAME;
