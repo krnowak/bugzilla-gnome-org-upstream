@@ -64,7 +64,7 @@ sub install_before_final_checks {
 
     print "bz_column_info of $table::$column:\n" . Dumper($info) . "\n";
 
-    my $rows = $dbh->do("SHOW COLUMNS FROM $table WHERE Field = '$column'");
+    my $rows = $dbh->selectall_arrayref("SHOW COLUMNS FROM $table WHERE Field = '$column'");
 
     print "show columns of $table::$column:\n" . Dumper($rows) . "\n";
 }
