@@ -63,7 +63,7 @@ sub install_before_final_checks {
         push(@sql_values, "('$value', $id)");
     }
     if (@sql_values > 0) {
-        my $sql = "INSERT INTO tab_2(value, tab_1_id)" . join(', ', @sql_values);
+        my $sql = "INSERT INTO tab_2(value, tab_1_id) VALUES " . join(', ', @sql_values);
 
         $dbh->do($sql) or die $dbh->errstr();
     }
