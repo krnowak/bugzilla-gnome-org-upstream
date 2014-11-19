@@ -53,18 +53,20 @@ sub install_before_final_checks {
     return if $silent;
 
     my $dbh = Bugzilla->dbh();
-    my $column = $dbh->bz_column_info('tab_1', 'id');
+    my $table = 'tab_2';
+    my $column = 'tab_1_id';
+    my $info = $dbh->bz_column_info($table, $column);
 
     local $Data::Dumper::Purity = 1;
     local $Data::Dumper::Deepcopy = 1;
     local $Data::Dumper::Terse = 0;
     local $Data::Dumper::Sortkeys = 1;
 
-    print "bz_column_info of tab_1::id:\n" . Dumper($column) . "\n";
+    print "bz_column_info of $table::$column:\n" . Dumper($info) . "\n";
 
-    my $rows = $dbh->do("SHOW COLUMNS FROM tab_1 WHERE Field = 'id'");
+    my $rows = $dbh->do("SHOW COLUMNS FROM $table WHERE Field = '$column'");
 
-    print "show columns of tab_1::id:\n" . Dumper($rows) . "\n";
+    print "show columns of $table::$column:\n" . Dumper($rows) . "\n";
 }
 
 __PACKAGE__->NAME;
