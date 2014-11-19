@@ -54,8 +54,12 @@ sub install_before_final_checks {
 
     return if (@{$rows} > 0 and @{$rows->[0]} > 0 and $rows->[0][0] > 0);
 
+    print "Inserting values to tab_1\n" unless $silent;
+
     $dbh->do("INSERT INTO tab_1(value) VALUES ('ajwaj'), ('meh'), ('groan')") or die $dbh->errstr();
+    print "Getting all values from tab_1 where there is an 'a'\n" unless $silent;
     $rows = $dbh->selectall_arrayref("SELECT id FROM tab_1 WHERE value LIKE '%a%'") or die $dbh->errstr();
+    print "Got " . scalar(@{$rows}) . " rows\n" unless $silent;
     foreach my $row (@{$rows}) {
         my $id = $row->[0];
         my $value = "a $id";
@@ -65,6 +69,7 @@ sub install_before_final_checks {
     if (@sql_values > 0) {
         my $sql = "INSERT INTO tab_2(value, tab_1_id) VALUES " . join(', ', @sql_values);
 
+        print "Inserting values to tab_2\n" unless $silent;
         $dbh->do($sql) or die $dbh->errstr();
     }
 }
