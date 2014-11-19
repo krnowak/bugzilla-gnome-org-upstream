@@ -60,7 +60,7 @@ sub install_before_final_checks {
     local $Data::Dumper::Terse = 0;
     local $Data::Dumper::Sortkeys = 1;
 
-    print "bz_column_info of tab_1::id:\n" . Dumper($data) . "\n";
+    print "bz_column_info of tab_1::id:\n" . Dumper($column) . "\n";
 
     my $rows = $dbh->do("SHOW COLUMNS FROM tab_1 WHERE Field = 'id'");
 
