@@ -49,11 +49,13 @@ sub install_before_final_checks {
     my ($self, $args) = @_;
     my $silent = $args->{'silent'};
     my $dbh = Bugzilla->dbh();
-
-    $dbh->do("INSERT INTO tab_1(value) VALUES ('ajwaj', 'meh', 'groan')") or die $dbh->errstr();
-
-    my $rows = $dbh->selectall_arrayref("SELECT id FROM tab_1 WHERE value LIKE '%a%'") or die $dbh->errstr();
+    my $rows = $dbh->selectall_arrayref("SELECT COUNT(id) FROM tab_1") or die $dbh->errstr();
     my $sql_values = '';
+
+    return if (@{$rows} > 0 and @{$rows->[0]} > 0 and $rows->[0][0] > 0);
+
+    $dbh->do("INSERT INTO tab_1(value) VALUES ('ajwaj'), ('meh'), ('groan')") or die $dbh->errstr();
+    $rows = $dbh->selectall_arrayref("SELECT id FROM tab_1 WHERE value LIKE '%a%'") or die $dbh->errstr();
     foreach my $row (@{$rows}) {
         my $id = $row->[0];
         my $value = "a $id";
