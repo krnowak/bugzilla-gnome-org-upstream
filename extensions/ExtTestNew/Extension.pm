@@ -49,13 +49,27 @@ sub db_schema_abstract_schema {
 sub install_update_db {
     my $dbh = Bugzilla->dbh();
 
-    $dbh->bz_alter_column('tab_1', 'id', {TYPE => 'MEDIUMSERIAL',
-                                          NOTNULL => 1,
-                                          PRIMARYKEY => 1});
-    $dbh->bz_alter_column('tab_2', 'tab_1_id', {TYPE => 'INT3', NOTNULL => 1,
-                                                REFERENCES => {TABLE  => 'tab_1',
-                                                               COLUMN => 'id',
-                                                               DELETE => 'CASCADE'}});
+    print "Are we in transaction: " . ($dbh->bz_in_transaction() ? "yes" : "no") . "\n";
+
+    $dbh->bz_start_transaction();
+    unless ($dbh->bz_alter_column('tab_1', 'id', {TYPE => 'MEDIUMSERIAL',
+                                                  NOTNULL => 1,
+                                                  PRIMARYKEY => 1})) {
+        my $errstr = $dbh->errstr();
+
+        $dbh->bz_rollback_transaction() ;
+        die $errstr;
+    }
+    unless ($dbh->bz_alter_column('tab_2', 'tab_1_id', {TYPE => 'INT3', NOTNULL => 1,
+                                                        REFERENCES => {TABLE  => 'tab_1',
+                                                                       COLUMN => 'id',
+                                                                       DELETE => 'CASCADE'}})) {
+        my $errstr = $dbh->errstr();
+
+        $dbh->bz_rollback_transaction() ;
+        die $errstr;
+    }
+    $dbh->bz_commit_transaction();
 }
 
 sub install_before_final_checks {
