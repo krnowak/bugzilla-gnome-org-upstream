@@ -1,4 +1,4 @@
-/.htaccess
+.htaccess
 /lib/*
 /template/en/custom
 /docs/bugzilla.ent
@@ -7,11 +7,13 @@
 /docs/en/html
 /docs/en/pdf
 /skins/custom
+/skins/contrib/Gnome
 /graphs
 /data
 /localconfig
 /index.html
 /extensions
+/customizations
 
 /skins/contrib/Dusk/IE-fixes.css
 /skins/contrib/Dusk/admin.css
